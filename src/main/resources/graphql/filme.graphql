@@ -6,7 +6,7 @@ type Film {
   titel           : String!
   genre           : Genre!
   erscheinungsjahr: Int!
-  bewertung       : Float
+  bewertung       : Float # muss zwischen 0.0 und 10.0 liegen
   regisseur       : String
   verfuegbar      : Boolean!
 }
@@ -44,5 +44,5 @@ type Mutation {
   ): Film
 
   filmLoeschen(id: ID!): Boolean!
-  
+
 }

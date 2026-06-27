@@ -61,6 +61,8 @@ public class GraphQLController {
 								   @Argument String regisseur,
 								   @Argument Boolean verfuegbar ) {
 
+		pruefeBewertung( bewertung ); // IllegalArgumentException
+
 		final FilmEntity film = new FilmEntity( titel,
 										        genre,
 										        erscheinungsjahr,
@@ -74,6 +76,8 @@ public class GraphQLController {
 	@MutationMapping
 	public FilmEntity filmBewertungAktualisieren( @Argument Long id,
 										          @Argument Float bewertung ) {
+
+		pruefeBewertung( bewertung ); // throws IllegalArgumentException
 		
 		final Optional<FilmEntity> filmOptional = _filmRepo.findById( id ); 
 		
@@ -99,6 +103,28 @@ public class GraphQLController {
 
 		_filmRepo.deleteById( id );
 		return true;
+	}
+
+
+	/**
+	 * Hilfsmethode um zu überprüfen, ob {@code bewertung} im
+	 * Bereich {@code 0.0} und {@code 10.0} (jeweils einschließlich
+	 * liegt.
+	 * 
+	 * @param bewertung Zu überprüfende Bewertung für Film
+	 * 
+	 * @throws IllegalArgumentException Wenn {@code bewertung} echt-kleiner
+	 *                                  0.0 oder echt-größer 10.0
+	 */
+	private void pruefeBewertung( Float bewertung ) {
+
+		if ( bewertung == null ) { return; }
+
+		if ( bewertung < 0.0f || bewertung > 10.0f ) {
+			
+			throw new IllegalArgumentException( 
+					"Bewertung muss zwischen 0.0 und 10.0 liegen." );
+		}
 	}
 
 }
