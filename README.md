@@ -72,13 +72,13 @@ mutation {
     regisseur       : "Olivier Nakache & Éric Toledano"
     verfuegbar      : true
   ) {
-    id
-    titel
-    genre
-    erscheinungsjahr
-    bewertung
-    regisseur
-    verfuegbar
+        id
+        titel
+        genre
+        erscheinungsjahr
+        bewertung
+        regisseur
+        verfuegbar
   }
 }
 ```
