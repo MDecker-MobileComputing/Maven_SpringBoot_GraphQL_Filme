@@ -3,11 +3,16 @@ package de.eldecker.dhbw.spring.filme;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+
+/**
+ * Einstiegspunkt.
+ */
 @SpringBootApplication
 public class FilmeApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(FilmeApplication.class, args);
+	public static void main( String[] args ) {
+		
+		SpringApplication.run( FilmeApplication.class, args );
 	}
 
 }

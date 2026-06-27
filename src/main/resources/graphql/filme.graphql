@@ -1,0 +1,44 @@
+
+type Film {
+  id: ID!
+  titel: String!
+  genre: Genre!
+  erscheinungsjahr: Int!
+  bewertung: Float
+  regisseur: String
+  verfuegbar: Boolean!
+}
+
+enum Genre {
+  ACTION
+  DRAMA
+  KOMOEDIE
+  SCIENCE_FICTION
+  THRILLER
+  DOKUMENTATION
+}
+
+type Query {
+  filme: [Film!]!
+  filmById(id: ID!): Film
+  filmeNachGenre(genre: Genre!): [Film!]!
+  verfuegbareFilme: [Film!]!
+}
+
+type Mutation {
+  filmAnlegen(
+    titel: String!
+    genre: Genre!
+    erscheinungsjahr: Int!
+    bewertung: Float
+    regisseur: String
+    verfuegbar: Boolean!
+  ): Film!
+
+  filmBewertungAktualisieren(
+    id: ID!
+    bewertung: Float!
+  ): Film
+
+  filmLoeschen(id: ID!): Boolean!
+}
