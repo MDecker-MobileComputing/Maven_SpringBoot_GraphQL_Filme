@@ -48,6 +48,20 @@ query {
 
 <br>
 
+Name und Erscheinungsjahr für Filme mit Genre=SCIENCE_FICTION zurückliefern:
+
+```
+query {
+  filmeNachGenre(genre: SCIENCE_FICTION) {
+    titel
+    erscheinungsjahr
+  }
+}
+```
+
+
+<br>
+
 ----
 
 ## License ##

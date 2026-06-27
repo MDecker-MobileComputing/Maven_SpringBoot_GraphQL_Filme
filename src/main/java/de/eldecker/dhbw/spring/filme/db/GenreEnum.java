@@ -1,11 +1,16 @@
 package de.eldecker.dhbw.spring.filme.db;
 
+
+/**
+ * Eigener Aufzählungstyp für Film-Genres. 
+ */
 public enum GenreEnum {
 
 	ACTION,
-	DRAMA,
-	KOMOEDIE,
 	DOKUMENTATION,
+	DRAMA,
+	FANTASY,
+	KOMOEDIE,	
 	SCIENCE_FICTION,
 	THRILLER	
 }
