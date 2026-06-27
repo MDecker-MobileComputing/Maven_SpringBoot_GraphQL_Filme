@@ -14,8 +14,11 @@ import de.eldecker.dhbw.spring.filme.db.FilmRepository;
 import de.eldecker.dhbw.spring.filme.db.GenreEnum;
 
 
+/**
+ * GraphQL-Controller für Abfragen und Änderungen auf der Film-Datenbank.
+ */
 @Controller
-public class FilmController {
+public class GraphQLController {
 
 	@Autowired
 	private FilmRepository _filmRepo;
@@ -81,7 +84,8 @@ public class FilmController {
 		
 		final FilmEntity film = filmOptional.get();
 		film.setBewertung( bewertung );
-		return film;
+		
+		return _filmRepo.save( film );
 	}
 
 

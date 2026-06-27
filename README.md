@@ -48,7 +48,7 @@ query {
 
 <br>
 
-Name und Erscheinungsjahr für Filme mit Genre=SCIENCE_FICTION zurückliefern:
+Name und Erscheinungsjahr für alle Science-Fiction-Filme zurückliefern:
 
 ```
 query {
@@ -59,6 +59,51 @@ query {
 }
 ```
 
+<br>
+
+Einen neuen Film anlegen:
+```
+mutation {
+  filmAnlegen(
+    titel: "Ziemlich beste Freunde"
+    genre: KOMOEDIE
+    erscheinungsjahr: 2011
+    bewertung: 8.5
+    regisseur: "Olivier Nakache & Éric Toledano"
+    verfuegbar: true
+  ) {
+    id
+    titel
+    genre
+    erscheinungsjahr
+    bewertung
+    regisseur
+    verfuegbar
+  }
+}
+```
+
+<br>
+
+Bewertung von Film mit ID=1 ändern:
+```
+mutation {
+  filmBewertungAktualisieren(id: "1", bewertung: 9.9) {
+    id
+    titel
+    bewertung
+  }
+}
+```
+
+<br>
+
+Film mit ID=6 löschen:
+```
+mutation {
+  filmLoeschen(id: "6")
+}
+```
 
 <br>
 

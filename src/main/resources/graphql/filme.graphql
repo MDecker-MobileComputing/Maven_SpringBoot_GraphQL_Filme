@@ -1,12 +1,14 @@
 
+# Das "!" hinter einem Datentyp bedeutet "non-null": Das Feld muss immer einen Wert haben.
+
 type Film {
-  id: ID!
-  titel: String!
-  genre: Genre!
+  id              : ID!
+  titel           : String!
+  genre           : Genre!
   erscheinungsjahr: Int!
-  bewertung: Float
-  regisseur: String
-  verfuegbar: Boolean!
+  bewertung       : Float
+  regisseur       : String
+  verfuegbar      : Boolean!
 }
 
 enum Genre {
@@ -19,26 +21,28 @@ enum Genre {
 }
 
 type Query {
-  filme: [Film!]!
-  filmById(id: ID!): Film
+  filme                        : [Film!]!
+  filmById(id: ID!)            : Film     # ist "null" wenn kein Film mit der angegebenen ID existiert
   filmeNachGenre(genre: Genre!): [Film!]!
-  verfuegbareFilme: [Film!]!
+  verfuegbareFilme             : [Film!]!
 }
 
 type Mutation {
+
   filmAnlegen(
-    titel: String!
-    genre: Genre!
+    titel           : String!
+    genre           : Genre!
     erscheinungsjahr: Int!
-    bewertung: Float
-    regisseur: String
-    verfuegbar: Boolean!
+    bewertung       : Float
+    regisseur       : String
+    verfuegbar      : Boolean!
   ): Film!
 
   filmBewertungAktualisieren(
-    id: ID!
+    id       : ID!
     bewertung: Float!
   ): Film
 
   filmLoeschen(id: ID!): Boolean!
+  
 }
