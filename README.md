@@ -102,7 +102,7 @@ mutation {
 
 <br>
 
-Verfuegbarkeit von Film mit ID=1 ändern:
+Verfügbarkeit von Film mit ID=1 ändern:
 ```
 mutation {
   filmVerfuegbarkeitAktualisieren( id: "1", verfuegbar: true ) {
@@ -124,7 +124,7 @@ mutation {
 
 <br>
 
-Laufende Aenderungen per Subscription beobachten:
+Laufende Änderungen per Subscription beobachten:
 ```
 subscription {
   filmAenderungen {
