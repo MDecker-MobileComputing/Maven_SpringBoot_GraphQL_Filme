@@ -76,7 +76,7 @@ public class DemoDatenImporter implements ApplicationRunner {
 						            1997,
 						            8.8f,
 						            "James Cameron", 
-						            false );
+						            true );
 	        _filmRepo.save( film4 );		 
 	        
 	        final FilmEntity film5 = 
