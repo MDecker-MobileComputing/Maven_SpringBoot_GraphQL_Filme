@@ -22,6 +22,14 @@ enum Genre {
 }
 
 
+type FilmAenderung {
+  filmId   : ID!
+  art      : String!
+  zeitpunkt: String!
+  film     : Film
+}
+
+
 type Query {
   filme                        : [Film!]!
   filmById(id: ID!)            : Film     # ist "null" wenn kein Film mit der angegebenen ID existiert
@@ -47,4 +55,8 @@ type Mutation {
 
   filmLoeschen(id: ID!): Boolean!
 
+}
+
+type Subscription {
+  filmAenderungen: FilmAenderung!
 }

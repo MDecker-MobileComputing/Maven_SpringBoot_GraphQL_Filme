@@ -4,14 +4,18 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.graphql.data.method.annotation.SubscriptionMapping;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
+import reactor.core.publisher.Flux;
 
 import de.eldecker.dhbw.spring.filme.db.FilmEntity;
 import de.eldecker.dhbw.spring.filme.db.FilmRepository;
 import de.eldecker.dhbw.spring.filme.db.GenreEnum;
+import de.eldecker.dhbw.spring.filme.logik.FilmAenderungEvent;
+import de.eldecker.dhbw.spring.filme.logik.FilmAenderungPublisher;
 
 
 /**
@@ -22,6 +26,9 @@ public class GraphQLController {
 
 	@Autowired
 	private FilmRepository _filmRepo;
+
+	@Autowired
+	private FilmAenderungPublisher _filmAenderungPublisher;
 
 
 	@QueryMapping
@@ -69,7 +76,9 @@ public class GraphQLController {
 										        bewertung,
 										        regisseur,
 										        verfuegbar );
-		return _filmRepo.save( film );
+		final FilmEntity gespeicherterFilm = _filmRepo.save( film );
+		_filmAenderungPublisher.filmAngelegt( gespeicherterFilm );
+		return gespeicherterFilm;
 	}
 
 
@@ -89,20 +98,32 @@ public class GraphQLController {
 		final FilmEntity film = filmOptional.get();
 		film.setBewertung( bewertung );
 		
-		return _filmRepo.save( film );
+		final FilmEntity gespeicherterFilm = _filmRepo.save( film );
+		_filmAenderungPublisher.filmAktualisiert( gespeicherterFilm );
+		return gespeicherterFilm;
 	}
 
 
 	@MutationMapping
 	public Boolean filmLoeschen( @Argument Long id ) {
 
-		if ( _filmRepo.existsById( id ) == false ) {
+		final Optional<FilmEntity> filmOptional = _filmRepo.findById( id );
+		if ( filmOptional.isEmpty() ) {
 			
 			return false;
 		}
 
+		final FilmEntity film = filmOptional.get();
 		_filmRepo.deleteById( id );
+		_filmAenderungPublisher.filmGeloescht( film );
 		return true;
+	}
+
+
+	@SubscriptionMapping
+	public Flux<FilmAenderungEvent> filmAenderungen() {
+
+		return _filmAenderungPublisher.filmAenderungen();
 	}
 
 

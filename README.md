@@ -111,6 +111,24 @@ mutation {
 
 <br>
 
+Laufende Aenderungen per Subscription beobachten:
+```
+subscription {
+  filmAenderungen {
+    filmId
+    art
+    zeitpunkt
+    film {
+      titel
+      genre
+      verfuegbar
+    }
+  }
+}
+```
+
+<br>
+
 ----
 
 ## License ##
