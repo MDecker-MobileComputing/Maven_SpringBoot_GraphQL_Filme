@@ -12,13 +12,15 @@ type Film {
 }
 
 enum Genre {
-  ACTION
-  DRAMA
-  KOMOEDIE
-  SCIENCE_FICTION
-  THRILLER
-  DOKUMENTATION
+	ACTION,
+	DOKUMENTATION,
+	DRAMA,
+	FANTASY,
+	KOMOEDIE,	
+	SCIENCE_FICTION,
+	THRILLER	
 }
+
 
 type Query {
   filme                        : [Film!]!

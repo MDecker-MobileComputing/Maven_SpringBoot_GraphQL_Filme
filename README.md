@@ -7,6 +7,10 @@ Diese Repo enthält ein Maven-Projekt mit einer Spring-Boot-Anwendung, die eine 
 
 <br>
 
+![Screenshot](screenshot_1.png)
+
+<br>
+
 ----
 
 ## GraphQL-Queries ##
