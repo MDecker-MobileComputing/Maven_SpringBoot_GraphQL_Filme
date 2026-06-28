@@ -1,7 +1,7 @@
 "use strict";
 
 
-let divFilmliste = null;
+let divTabelleFilm = null;
 
 
 /**
@@ -9,10 +9,10 @@ let divFilmliste = null;
  */
 document.addEventListener( "DOMContentLoaded", function() {
 
-  divFilmliste = document.getElementById( "filmliste" );
-  if ( !divFilmliste ) {
+  divTabelleFilm = document.getElementById( "tabelleFilm" );
+  if ( !divTabelleFilm ) {
 
-    console.error( "Fehler: Konnte <div id=\"filmliste\"> nicht finden!" );
+    console.error( "Fehler: Konnte <div id=\"tabelleFilm\"> nicht finden!" );
     return;
   }
 
@@ -132,26 +132,26 @@ function erstelleFilmtabelle( filme ) {
  */
 async function ladeUndZeigeFilme() {
 
-  divFilmliste.textContent = "Filmliste wird geladen...";
+  divTabelleFilm.textContent = "Filmliste wird geladen...";
 
   try {
 
     const filme = await ladeFilme();
 
-    divFilmliste.innerHTML = "";
+    divTabelleFilm.innerHTML = "";
 
     if ( filme.length === 0 ) {
 
-      divFilmliste.textContent = "Keine Filme gefunden.";
+      divTabelleFilm.textContent = "Keine Filme gefunden.";
       return;
     }
 
     const tabelle = erstelleFilmtabelle( filme );
-    divFilmliste.appendChild( tabelle );
+    divTabelleFilm.appendChild( tabelle );
 
   } catch ( fehler ) {
 
     console.error( fehler );
-    divFilmliste.textContent = `Fehler beim Laden der Filmliste: ${fehler.message}`;
+    divTabelleFilm.textContent = `Fehler beim Laden der Filmliste: ${fehler.message}`;
   }
 }

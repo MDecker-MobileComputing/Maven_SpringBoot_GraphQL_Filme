@@ -33,3 +33,13 @@ ul li {
 .abstand_oben {
     margin-top: 1em;
 }
+
+table {
+    border-collapse: collapse;
+}
+
+th,
+td {
+    border: 1px solid #555;
+    padding: 0.4em 0.6em;
+}
