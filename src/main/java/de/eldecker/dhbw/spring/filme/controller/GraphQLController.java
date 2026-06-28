@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.graphql.data.method.annotation.SubscriptionMapping;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -13,7 +14,9 @@ import reactor.core.publisher.Flux;
 
 import de.eldecker.dhbw.spring.filme.db.FilmEntity;
 import de.eldecker.dhbw.spring.filme.db.FilmRepository;
+import de.eldecker.dhbw.spring.filme.db.FilmSortByEnum;
 import de.eldecker.dhbw.spring.filme.db.GenreEnum;
+import de.eldecker.dhbw.spring.filme.db.SortDirectionEnum;
 import de.eldecker.dhbw.spring.filme.logik.FilmAenderungEvent;
 import de.eldecker.dhbw.spring.filme.logik.FilmAenderungPublisher;
 
@@ -32,9 +35,21 @@ public class GraphQLController {
 
 
 	@QueryMapping
-	public List<FilmEntity> filme() {
+	public List<FilmEntity> filme( @Argument FilmSortByEnum sortBy,
+								   @Argument SortDirectionEnum direction ) {
 
-		return _filmRepo.findAll();
+		final FilmSortByEnum sortByWert = sortBy == null
+													? FilmSortByEnum.ID
+													: sortBy;
+
+		final SortDirectionEnum directionWert = direction == null
+															 ? SortDirectionEnum.ASC
+															 : direction;
+
+		final Sort sortierung = Sort.by( directionWert.getSortDirection(),
+									     sortByWert.getFeldname() );
+
+		return _filmRepo.findAll( sortierung );
 	}
 
 
@@ -76,8 +91,10 @@ public class GraphQLController {
 										        bewertung,
 										        regisseur,
 										        verfuegbar );
+		
 		final FilmEntity gespeicherterFilm = _filmRepo.save( film );
 		_filmAenderungPublisher.filmAngelegt( gespeicherterFilm );
+		
 		return gespeicherterFilm;
 	}
 
@@ -100,6 +117,7 @@ public class GraphQLController {
 		
 		final FilmEntity gespeicherterFilm = _filmRepo.save( film );
 		_filmAenderungPublisher.filmAktualisiert( gespeicherterFilm );
+		
 		return gespeicherterFilm;
 	}
 
@@ -119,6 +137,7 @@ public class GraphQLController {
 
 		final FilmEntity gespeicherterFilm = _filmRepo.save( film );
 		_filmAenderungPublisher.filmAktualisiert( gespeicherterFilm );
+		
 		return gespeicherterFilm;
 	}
 
@@ -132,6 +151,7 @@ public class GraphQLController {
 		final FilmEntity film = filmOptional.get();
 		_filmRepo.deleteById( id );
 		_filmAenderungPublisher.filmGeloescht( film );
+		
 		return true;
 	}
 

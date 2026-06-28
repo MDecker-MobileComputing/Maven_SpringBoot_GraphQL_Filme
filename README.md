@@ -39,6 +39,20 @@ query {
 
 <br>
 
+Liste aller Filme mit Sortierung nach Titel:
+
+```
+query {
+  filme( sortBy: ERSCHEINUNGSJAHR, direction: ASC ) {
+    id
+    titel
+    erscheinungsjahr
+  }
+}
+```
+
+<br>
+
 Einige Attribute für Film mit ID=1 abfragen:
 ```
 query {

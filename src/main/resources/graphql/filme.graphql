@@ -21,6 +21,20 @@ enum Genre {
 	THRILLER	
 }
 
+enum FilmSortBy {
+  ID,
+  TITEL,
+  ERSCHEINUNGSJAHR,
+  BEWERTUNG,
+  REGISSEUR,
+  VERFUEGBAR
+}
+
+enum SortDirection {
+  ASC,
+  DESC
+}
+
 
 type FilmAenderung {
   filmId   : ID!
@@ -31,7 +45,7 @@ type FilmAenderung {
 
 
 type Query {
-  filme                        : [Film!]!
+  filme(sortBy: FilmSortBy, direction: SortDirection): [Film!]!
   filmById(id: ID!)            : Film     # ist "null" wenn kein Film mit der angegebenen ID existiert
   filmeNachGenre(genre: Genre!): [Film!]!
   verfuegbareFilme             : [Film!]!

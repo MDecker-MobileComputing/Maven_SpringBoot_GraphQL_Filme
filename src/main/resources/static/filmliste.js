@@ -17,7 +17,6 @@ document.addEventListener( "DOMContentLoaded", function() {
   }
 
   ladeUndZeigeFilme();
-
 });
 
 
@@ -30,7 +29,7 @@ async function ladeFilme() {
 
   const graphqlQuery = `
     query {
-      filme {
+      filme( sortBy: ERSCHEINUNGSJAHR, direction: ASC ) {
         id
         titel
         genre
