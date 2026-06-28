@@ -53,6 +53,11 @@ type Mutation {
     bewertung: Float!
   ): Film
 
+  filmVerfuegbarkeitAktualisieren(
+    id        : ID!
+    verfuegbar: Boolean!
+  ): Film
+
   filmLoeschen(id: ID!): Boolean!
 
 }

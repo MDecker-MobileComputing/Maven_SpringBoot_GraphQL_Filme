@@ -102,6 +102,19 @@ mutation {
 
 <br>
 
+Verfuegbarkeit von Film mit ID=1 ändern:
+```
+mutation {
+  filmVerfuegbarkeitAktualisieren( id: "1", verfuegbar: true ) {
+    id
+    titel
+    verfuegbar
+  }
+}
+```
+
+<br>
+
 Film mit ID=6 löschen:
 ```
 mutation {

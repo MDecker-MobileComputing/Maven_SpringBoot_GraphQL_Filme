@@ -105,13 +105,29 @@ public class GraphQLController {
 
 
 	@MutationMapping
-	public Boolean filmLoeschen( @Argument Long id ) {
+	public FilmEntity filmVerfuegbarkeitAktualisieren( @Argument Long id,
+									              @Argument Boolean verfuegbar ) {
 
 		final Optional<FilmEntity> filmOptional = _filmRepo.findById( id );
 		if ( filmOptional.isEmpty() ) {
-			
-			return false;
+
+			return null;
 		}
+
+		final FilmEntity film = filmOptional.get();
+		film.setVerfuegbar( verfuegbar );
+
+		final FilmEntity gespeicherterFilm = _filmRepo.save( film );
+		_filmAenderungPublisher.filmAktualisiert( gespeicherterFilm );
+		return gespeicherterFilm;
+	}
+
+
+	@MutationMapping
+	public Boolean filmLoeschen( @Argument Long id ) {
+
+		final Optional<FilmEntity> filmOptional = _filmRepo.findById( id );
+		if ( filmOptional.isEmpty() ) { return false; }
 
 		final FilmEntity film = filmOptional.get();
 		_filmRepo.deleteById( id );
