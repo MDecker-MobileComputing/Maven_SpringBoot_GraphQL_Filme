@@ -21,6 +21,15 @@ enum Genre {
 	THRILLER
 }
 
+
+type Query {
+
+  filme( sortBy: FilmSortBy, direction: SortDirection ): [Film!]!
+  filmById(id: ID!)                                    :  Film
+  filmeNachGenre(genre: Genre!)                        : [Film!]!
+  verfuegbareFilme                                     : [Film!]!
+}
+
 enum FilmSortBy {
 
   ID,
@@ -37,14 +46,6 @@ enum SortDirection {
   DESC
 }
 
-
-type Query {
-
-  filme(sortBy: FilmSortBy, direction: SortDirection): [Film!]!
-  filmById(id: ID!)            : Film     # ist "null" wenn kein Film mit der angegebenen ID existiert
-  filmeNachGenre(genre: Genre!): [Film!]!
-  verfuegbareFilme             : [Film!]!
-}
 
 type Mutation {
 
