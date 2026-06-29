@@ -4,15 +4,13 @@
 let divTabelleFilm = null;
 
 
-/**
- * Funktion wird ausgeführt, sobald die HTML-Seite vollständig geladen ist.
- */
 document.addEventListener( "DOMContentLoaded", function() {
 
   divTabelleFilm = document.getElementById( "tabelleFilm" );
   if ( !divTabelleFilm ) {
 
-    console.error( "Fehler: Konnte <div id=\"tabelleFilm\"> nicht finden!" );
+    console.error(
+      "Fehler: Konnte <div id=\"tabelleFilm\"> nicht finden!" );
     return;
   }
 
@@ -21,54 +19,32 @@ document.addEventListener( "DOMContentLoaded", function() {
 
 
 /**
- * Lädt alle Filme von der GraphQL-API.
- *
- * @returns {Promise<Array<object>>} Liste von Film-Objekten.
+ * Lädt die Filme und rendert die Tabelle unterhalb des Ziel-DIVs.
  */
-async function ladeFilme() {
+async function ladeUndZeigeFilme() {
 
-  const graphqlQuery = `
-    query {
-      filme( sortBy: ERSCHEINUNGSJAHR, direction: ASC ) {
-        id
-        titel
-        genre
-        erscheinungsjahr
-        bewertung
-        regisseur
-        verfuegbar
-      }
+  divTabelleFilm.textContent = "Filmliste wird geladen...";
+
+  try {
+
+    const filme = await ladeFilme();
+
+    divTabelleFilm.innerHTML = "";
+
+    if ( filme.length === 0 ) {
+
+      divTabelleFilm.textContent = "Keine Filme gefunden.";
+      return;
     }
-  `;
 
-  const antwort = await fetch( "/graphql", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Accept"      : "application/json"
-    },
-    body: JSON.stringify( { query: graphqlQuery } )
-  } );
+    const tabelle = erstelleFilmtabelle( filme );
+    divTabelleFilm.appendChild( tabelle );
 
-  if ( !antwort.ok ) {
+  } catch ( fehler ) {
 
-    throw new Error( `HTTP-Fehler beim Laden der Filme: ${antwort.status}` );
+    console.error( fehler );
+    divTabelleFilm.textContent = `Fehler beim Laden der Filmliste: ${fehler.message}`;
   }
-
-  const json = await antwort.json();
-
-  if ( json.errors && json.errors.length > 0 ) {
-
-    const meldung = json.errors.map( function(err) { return err.message; } ).join( "; " );
-    throw new Error( `GraphQL-Fehler: ${meldung}` );
-  }
-
-  if ( !json.data || !Array.isArray( json.data.filme ) ) {
-
-    throw new Error( "Unerwartete API-Antwort: Feld data.filme fehlt oder ist ungültig." );
-  }
-
-  return json.data.filme;
 }
 
 
@@ -76,7 +52,7 @@ async function ladeFilme() {
  * Erstellt eine HTML-Tabelle aus der Liste der Filme.
  *
  * @param {Array<object>} filme Liste der Filme.
- * 
+ *
  * @returns {HTMLTableElement} Fertige Tabelle.
  */
 function erstelleFilmtabelle( filme ) {
@@ -128,30 +104,54 @@ function erstelleFilmtabelle( filme ) {
 
 
 /**
- * Lädt die Filme und rendert die Tabelle unterhalb des Ziel-DIVs.
+ * Lädt alle Filme von der GraphQL-API.
+ *
+ * @returns {Promise<Array<object>>} Liste von Film-Objekten.
  */
-async function ladeUndZeigeFilme() {
+async function ladeFilme() {
 
-  divTabelleFilm.textContent = "Filmliste wird geladen...";
-
-  try {
-
-    const filme = await ladeFilme();
-
-    divTabelleFilm.innerHTML = "";
-
-    if ( filme.length === 0 ) {
-
-      divTabelleFilm.textContent = "Keine Filme gefunden.";
-      return;
+  const graphqlQuery = `
+    query {
+      filme( sortBy: ERSCHEINUNGSJAHR, direction: ASC ) {
+        id
+        titel
+        genre
+        erscheinungsjahr
+        bewertung
+        regisseur
+        verfuegbar
+      }
     }
+  `;
 
-    const tabelle = erstelleFilmtabelle( filme );
-    divTabelleFilm.appendChild( tabelle );
+  const antwort = await fetch( "/graphql", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept"      : "application/json"
+    },
+    body: JSON.stringify( { query: graphqlQuery } )
+  } );
 
-  } catch ( fehler ) {
+  if ( !antwort.ok ) {
 
-    console.error( fehler );
-    divTabelleFilm.textContent = `Fehler beim Laden der Filmliste: ${fehler.message}`;
+    throw new Error( `HTTP-Fehler beim Laden der Filme: ${antwort.status}` );
   }
+
+  const json = await antwort.json();
+
+  if ( json.errors && json.errors.length > 0 ) {
+
+    const meldung =
+      json.errors.map( function(fehler) { return fehler.message; } ).join( "; " );
+    throw new Error( `GraphQL-Fehler: ${meldung}` );
+  }
+
+  if ( !json.data || !Array.isArray( json.data.filme ) ) {
+
+    throw new Error(
+      "Unerwartete API-Antwort: Feld data.filme fehlt oder ist ungültig." );
+  }
+
+  return json.data.filme;
 }
