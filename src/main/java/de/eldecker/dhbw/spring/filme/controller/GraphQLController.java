@@ -124,8 +124,8 @@ public class GraphQLController {
 
 	@MutationMapping
 	public FilmEntity filmVerfuegbarkeitAktualisieren( @Argument Long id,
-									              @Argument Boolean verfuegbar ) {
-
+									                   @Argument Boolean verfuegbar ) {
+  
 		final Optional<FilmEntity> filmOptional = _filmRepo.findById( id );
 		if ( filmOptional.isEmpty() ) {
 
