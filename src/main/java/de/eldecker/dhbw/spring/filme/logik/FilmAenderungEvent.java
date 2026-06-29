@@ -1,18 +1,19 @@
 package de.eldecker.dhbw.spring.filme.logik;
 
-import java.time.Instant;
+import static java.time.Instant.now;
 
 import de.eldecker.dhbw.spring.filme.db.FilmEntity;
 
 
 /**
- * Ereignis fuer die GraphQL-Subscription zur Beobachtung von Film-Aenderungen.
+ * Ereignis fuer die GraphQL-Subscription zur Beobachtung 
+ * von Film-Änderungen.
  */
 public class FilmAenderungEvent {
 
-	private final Long filmId;
-	private final String art;
-	private final String zeitpunkt;
+	private final Long       filmId;
+	private final String     art;
+	private final String     zeitpunkt;
 	private final FilmEntity film;
 
 
@@ -20,34 +21,19 @@ public class FilmAenderungEvent {
 							   String art,
 							   FilmEntity film ) {
 
-		this.filmId = filmId;
-		this.art = art;
-		this.film = film;
-		this.zeitpunkt = Instant.now().toString();
+		this.filmId    = filmId;
+		this.art       = art;
+		this.film      = film;
+		this.zeitpunkt = now().toString();
 	}
 
 
-	public Long getFilmId() {
+	public Long getFilmId() { return filmId; }
 
-		return filmId;
-	}
+	public String getArt() { return art; }
 
+	public String getZeitpunkt() { return zeitpunkt; }
 
-	public String getArt() {
-
-		return art;
-	}
-
-
-	public String getZeitpunkt() {
-
-		return zeitpunkt;
-	}
-
-
-	public FilmEntity getFilm() {
-
-		return film;
-	}
+	public FilmEntity getFilm() { return film; }
 
 }
